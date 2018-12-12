@@ -11394,6 +11394,45 @@ var EtherscanProvider = /** @class */ (function (_super) {
             });
         });
     };
+    EtherscanProvider.prototype.getHistoryPaginated = function (addressOrName, page, perPage) {
+        var _this = this;
+        var url = this.baseUrl;
+        var apiKey = '';
+        if (this.apiKey) {
+            apiKey += '&apikey=' + this.apiKey;
+        }
+        return this.resolveName(addressOrName).then(function (address) {
+            url += '/api?module=account&action=txlist&address=' + address;
+            url += '&page=' + page;
+            url += '&offset=' + perPage;
+            url += '&sort=desc' + apiKey;
+            return web_1.fetchJson(url, null, getResult).then(function (result) {
+                _this.emit('debug', {
+                    action: 'getHistory',
+                    request: url,
+                    response: result,
+                    provider: _this
+                });
+                var output = [];
+                result.forEach(function (tx) {
+                    ['contractAddress', 'to'].forEach(function (key) {
+                        if (tx[key] == '') {
+                            delete tx[key];
+                        }
+                    });
+                    if (tx.creates == null && tx.contractAddress != null) {
+                        tx.creates = tx.contractAddress;
+                    }
+                    var item = base_provider_1.BaseProvider.checkTransactionResponse(tx);
+                    if (tx.timeStamp) {
+                        item.timestamp = parseInt(tx.timeStamp);
+                    }
+                    output.push(item);
+                });
+                return output;
+            });
+        });
+    };
     return EtherscanProvider;
 }(base_provider_1.BaseProvider));
 exports.EtherscanProvider = EtherscanProvider;
