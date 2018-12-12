@@ -335,4 +335,41 @@ export class EtherscanProvider extends BaseProvider{
             });
         });
     }
+
+    getHistoryPaginated(addressOrName: string | Promise<string>, page?: number, perPage?: number): Promise<Array<TransactionResponse>> {
+
+        let url = this.baseUrl;
+
+        let apiKey = '';
+        if (this.apiKey) { apiKey += '&apikey=' + this.apiKey; }
+
+        return this.resolveName(addressOrName).then((address) => {
+            url += '/api?module=account&action=txlist&address=' + address;
+            url += '&page=' + page;
+            url += '&offset=' + perPage;
+            url += '&sort=desc' + apiKey;
+
+            return fetchJson(url, null, getResult).then((result: Array<any>) => {
+                this.emit('debug', {
+                    action: 'getHistory',
+                    request: url,
+                    response: result,
+                    provider: this
+                });
+                var output: Array<TransactionResponse> = [];
+                result.forEach((tx) => {
+                    ['contractAddress', 'to'].forEach(function(key) {
+                        if (tx[key] == '') { delete tx[key]; }
+                    });
+                    if (tx.creates == null && tx.contractAddress != null) {
+                        tx.creates = tx.contractAddress;
+                    }
+                    let item = BaseProvider.checkTransactionResponse(tx);
+                    if (tx.timeStamp) { item.timestamp = parseInt(tx.timeStamp); }
+                    output.push(item);
+                });
+                return output;
+            });
+        });
+    }
 }

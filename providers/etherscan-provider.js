@@ -329,12 +329,7 @@ var EtherscanProvider = /** @class */ (function (_super) {
             });
         });
     };
-
     EtherscanProvider.prototype.getHistoryPaginated = function (addressOrName, page, perPage) {
-
-        page = page || 1;
-        perPage = perPage || 10;
-
         var _this = this;
         var url = this.baseUrl;
         var apiKey = '';

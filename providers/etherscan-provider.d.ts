@@ -7,5 +7,5 @@ export declare class EtherscanProvider extends BaseProvider {
     constructor(network?: Networkish, apiKey?: string);
     perform(method: string, params: any): Promise<any>;
     getHistory(addressOrName: string | Promise<string>, startBlock?: BlockTag, endBlock?: BlockTag): Promise<Array<TransactionResponse>>;
-    getHistoryPaginated(addressOrName: string | Promise<string>, page: number, perPage: number): Promise<Array<TransactionResponse>>;
+    getHistoryPaginated(addressOrName: string | Promise<string>, page?: number, perPage?: number): Promise<Array<TransactionResponse>>;
 }
