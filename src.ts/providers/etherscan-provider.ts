@@ -213,6 +213,11 @@ export class EtherscanProvider extends BaseProvider{
             url += apiKey;
             return get(url);
 
+          case 'getTransactionByBlockNumberAndIndex':
+            url += '/api?module=proxy&action=eth_getTransactionByBlockNumberAndIndex&tag=' + params.blockTag;
+            url += '&index=' + params.blockIndex + apiKey;
+            return get(url);
+
             case 'call': {
                 let transaction = getTransactionString(params.transaction);
                 if (transaction) { transaction = '&' + transaction; }
