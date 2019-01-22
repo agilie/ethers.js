@@ -303,6 +303,11 @@ export class EtherscanProvider extends BaseProvider{
                     return parseFloat(result.ethusd);
                 });
 
+            case 'getStatusContract':
+                url += '/api?module=proxy&action=getstatus&txhash=' + params.transactionHash;
+                url += apiKey;
+                return get(url);
+
             default:
                 break;
          }
