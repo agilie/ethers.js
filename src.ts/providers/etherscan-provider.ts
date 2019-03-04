@@ -130,11 +130,11 @@ export class EtherscanProvider extends BaseProvider{
                 url += '/api?module=proxy&action=eth_blockNumber' + apiKey;
                 return get(url);
 
-            // @TODO: realize param blockIndex
-            case 'getUncleByBlockNumberAndIndex':
-                url += '/api?module=proxy&action=eth_getUncleByBlockNumberAndIndex&tag=' + params.blockTag;
-                url += '&index=' + params.blockIndex + apiKey;
-                return get(url);
+            // // @TODO: implement param blockIndex
+            // case 'getUncleByBlockNumberAndIndex':
+            //     url += '/api?module=proxy&action=eth_getUncleByBlockNumberAndIndex&tag=' + params.blockTag;
+            //     url += '&index=' + params.blockIndex + apiKey;
+            //     return get(url);
 
             case 'getGasPrice':
                 url += '/api?module=proxy&action=eth_gasPrice' + apiKey;
